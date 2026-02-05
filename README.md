@@ -1,11 +1,8 @@
-> [!IMPORTANT]
-> This project is no longer being maintained. Please switch to [Kori](https://github.com/YangDai2003/Kori).
+# Noto
 
-- [English](README.md)
-- [简体中文](README.zh.md)
-- [Türkçe](README.tr.md)
-
-# OpenNote
+> 本项目源自 [OpenNote](https://github.com/YangDai2003/OpenNote-Compose)，由 OpenNote 硬 fork 后独立维护。原项目已停止维护。
+>
+> **本项目自用。**
 
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)
@@ -14,43 +11,41 @@
 ![LaTeX](https://img.shields.io/badge/latex-%23008080.svg?style=for-the-badge&logo=latex&logoColor=white)
 ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white)
 
-OpenNote is a modern Android note-taking application built entirely with Compose.
+Noto 是一款完全使用 Compose 构建的现代化 Android 记事本应用程序。
 
-[<img alt="Get it on Google Play" src="screenshots/google_play.png" width="200px">](https://play.google.com/store/apps/details?id=com.yangdai.opennote)
-[<img alt="Get it on IzzyOnDroid" src="screenshots/izzyondroid.png" width="200px">](https://apt.izzysoft.de/fdroid/index/apk/com.yangdai.opennote)
-[<img alt="Get it on GitHub" src="screenshots/github.png" width="200px">](https://github.com/YangDai2003/OpenNote-Compose/releases)
+[<img alt="Get it on GitHub" src="screenshots/github.png" width="200px">](https://github.com/ling0412/noto/releases)
 
-## 📃 Features
+## 📃 功能
 
-### Core Features:
-- **Create, Edit, and Delete Notes:** Users can easily create, modify, and remove notes.
-- **Create, Edit, and Delete Folders:** Organize notes effectively using folder management capabilities.
-- **Sorting and Filtering:** Effortlessly sort and filter notes and folders based on various criteria.
-- **Move Notes:** Seamlessly move notes between different folders for improved organization.
-- **Trash Bin:** Securely move notes to a trash bin for temporary storage before permanent deletion.
+### 核心功能
+- **创建、编辑和删除笔记**：用户可以轻松创建、编辑和删除笔记。
+- **创建、编辑和删除文件夹**：使用文件夹管理功能有效地组织笔记。
+- **排序和过滤**：根据各种条件轻松排序和过滤笔记和文件夹。
+- **移动笔记**：在不同文件夹之间无缝移动笔记以更好地组织。
+- **垃圾箱**：将笔记安全地移至垃圾箱，以便在永久删除之前临时存储。
 
-### Advanced Capabilities:
-- **Note SideSheet**: Automatically generates a **note outline** based on heading levels, allowing you to click and scroll to the corresponding section. Displays **word count, line count, and more** at a glance.
-- **Find and replace**: The note is too long and you can't find the location of a certain text? Want to modify it in batches but it's too annoying to edit one by one? Try this feature.
-- **Note Templates:** Insert notes from the "Templates" folder as templates, with automatic date and time formatting.
-- **Local Image, Video and Audio Support:** Directly import local images, videos and audio from the device into notes, with in-app preview.
-- **Markdown Support:** Comprehensive support for CommonMark and GitHub Flavored Markdown (GFM) syntax for rich formatting options.
-- **LaTeX Math Support:** Incorporates LaTeX Math syntax for rendering mathematical equations.
-- **Mermaid Support:** Supports Mermaid syntax for creating diagrams and flowcharts.
+### 进阶功能
+- **笔记侧边栏**: 根据标题层级自动生成笔记大纲，点击即可滚动到对应位置。字数、行数等信息一目了然。
+- **笔记内搜索与替换**：笔记太长找不到某段文本的位置? 想要批量修改，一个个找太蛮烦? 试试这个功能吧。
+- **支持笔记模板**: 支持将 Templates 文件夹中的笔记作为模板插入，并自动格式化时间和日期。
+- **支持本地图片、视频和音频**：支持在笔记中直接导入设备中的本地图片、视频和音频，并在预览中查看。
+- **Markdown 支持**：支持 CommonMark 和 GitHub Flavored Markdown (GFM) 语法，以实现多种格式选项。
+- **LaTeX Math 支持**：支持 LaTeX Math 语法，用于数学方程。
+- **Mermaid 支持**：支持 Mermaid 语法，用于创建图表和流程图。
 
-### Editing Modes:
-- **Lite Mode:** Provides basic Markdown syntax with a WYSIWYG (What You See Is What You Get) display.
-- **Standard Mode:** Offers full Markdown syntax support with precise rendering, separating the editing and reading areas.
+### 两种模式
+- **轻量模式**：提供基本的 Markdown 语法和所见即所得的显示效果。
+- **经典模式**：提供全面的 Markdown 语法和精准的渲染效果，分为编辑区域和阅读区域。
 
-### Additional Features:
-- **Accept Shared Text:** The app can directly receive text shared from other applications and create a new note with it.
-- **Directly Open Documents:** The app can be selected as handler for various text document types (such as .txt, .md, and .html), allowing them to be opened directly and converted into notes.
-- **Export Options:** Notes can be exported in various formats, including TXT, Markdown, PDF, and HTML, for versatile sharing and usage.
-- **Material 3 Design:** Adheres to Material Design 3 guidelines for a modern and cohesive user interface.
-- **Comprehensive Mouse and Keyboard Support:** The app has been thoroughly adapted for seamless interaction with mice and external physical keyboards, delivering a highly productive environment.
-- **Responsive Design:** Optimized for various screen sizes and device orientations, ensuring a great experience on phones, tablets, foldables and even ChromeOS devices.
+### 其他特点
+- **接受分享的文本**：应用可以直接接收来自其它应用分享的文本，并创建为笔记。
+- **直接打开文档**：应用可以被选择作为所有类型文本文档（.txt、.md、.html）的打开方式，并创建为笔记。
+- **导出选项**：笔记可以以各种格式导出，包括 TXT、Markdown、PDF 和 HTML，以实现多种共享和使用。
+- **Material 3 Design**：遵循 Material Design 3 指南，打造现代且具有凝聚力的用户界面。
+- **支持鼠标和物理键盘**：应用对使用鼠标和外接物理键盘时的操作做了充足的适配，确保了高生产力表现。
+- **响应式设计**：针对不同屏幕尺寸和方向的设备进行了优化，在手机、平板、折叠屏甚至搭载了ChromeOS的设备上都具有良好的体验。
 
-## 🖼️ Screenshots
+## 🖼️ 屏幕截图
 
 <div style="overflow-x: auto; white-space: nowrap;">
 
@@ -72,63 +67,51 @@ OpenNote is a modern Android note-taking application built entirely with Compose
 
 </div>
 
-## 🌎 Translations
+## 🌎 翻译
 
-Currently supports Chinese, English, German and Turkish.
+目前支持中文、英文、德语和土耳其语。
 
-## 💡 How to Use OpenNote with Markdown, LaTeX Math, and Mermaid Diagrams?
+## 💡 如何使用 Markdown、LaTeX Math 和 Mermaid 图表？
 
-You can know more about how to use OpenNote with Markdown, LaTeX Math, and Mermaid Diagrams in
-the [Guide](Guide.md).
+您可以在[用户指南](https://github.com/ling0412/noto/blob/main/Guide.zh.md)中了解有关如何使用 Markdown、LaTeX Math 和 Mermaid 图表的语法在 Noto 中编写文档的更多信息。
 
-## 🔎 Technical Details
+## 🔎 技术细节
 
-- **Programming Languages**: Kotlin
-- **Build Tool**: Gradle with Kotlin DSL
-- **Android Version**: The application targets Android SDK version 35 and is compatible with devices
-  running Android SDK version 29 and above.
-- **Kotlin Version**: 2.1.20.
-- **Java Version**: JVM Target 17.
+- **编程语言**：Kotlin
+- **构建工具**：Gradle 和 Kotlin DSL
+- **Android版本**：应用程序目标为 Android SDK 版本35，并且与运行 Android SDK 版本29及以上的设备兼容。
+- **Kotlin版本**：2.1.20。
+- **Java版本**：JVM Target 17。
 
-## 🛠️ Architecture
+## 🛠️ 架构
 
-- **MVVM (Model-View-ViewModel)**: Separates the user interface logic from the business logic,
-  providing a clear separation of concerns.
-- **Clean Architecture**: Emphasizes separation of concerns and layers of abstraction, making the
-  application more modular, scalable, and maintainable.
+- **MVVM（模型-视图-视图模型）**：将用户界面逻辑与业务逻辑分开，提供清晰的关注点分离。
+- **干净架构**：强调关注点和抽象层的分离，使应用程序更加模块化、可扩展和可维护。
 
-## 📚 Libraries and Frameworks
+## 📚 库和框架
 
-- **Compose**: A modern toolkit for building native Android UI.
-- **Hilt**: A dependency injection library for Android.
-- **KSP (Kotlin Symbol Processing API)**: Enhances Kotlin compilation with additional metadata
-  processing.
-- **Room**: A persistence library providing an abstraction layer over SQLite.
-- **Compose Navigation**: Simplifies the implementation of navigation between screens.
-- **Material Icons**: Provides Material Design icons for consistent visual elements.
-- **CommonMark**: For markdown parsing and rendering.
+- **Compose**：用于构建本机 Android UI 的现代化工具包。
+- **Hilt**：Android 的依赖注入库。
+- **KSP（Kotlin 符号处理 API）**：通过额外的元数据处理增强 Kotlin 编译。
+- **Room**：一个持久性库，提供 SQLite 上的抽象层。
+- **Compose Navigation**：简化应用程序中不同屏幕间导航的实现。
+- **Material Icons**：提供材质设计图标以实现一致的视觉元素。
+- **CommonMark**： 用于 Markdown 解析和渲染。
 
-## 🔐 Privacy Policy and Required Permissions
+## 📦 安装
 
-You can find the Privacy Policy and Required Permissions in the [Privacy Policy](PRIVACY_POLICY.md).
-
-## 📦 Installation
-
-To build and run this application, you need to install the latest version of Android Studio. Then,
-you can clone this repository from GitHub and open it in Android Studio.
+要构建和运行此应用程序，您需要安装最新版本的 Android Studio。然后，您可以从 GitHub 克隆此仓库并在 Android Studio 中打开它。
 
 ```bash
-git clone https://github.com/YangDai2003/OpenNote.git
+git clone https://github.com/ling0412/noto.git
 ```
 
-In Android Studio, select `Run > Run 'app'` to start the application.
+在 Android Studio 中，选择 `Run > Run 'app'` 来启动应用程序。
 
-## 🎈 Contribution
+## 🎈 贡献
 
-Any form of contribution is welcome! If you find a bug or have a new feature request, please create
-an issue. If you want to contribute code directly to this project, you can create a pull request.
+欢迎任何形式的贡献！如果您发现错误或有新的功能请求，请创建 issue。如果您想直接向此项目贡献代码，您可以创建 pull request。
 
-## 🔗 References
+## 🔗 参考
 
-- [MaskAnim](https://github.com/setruth/MaskAnim): Implementation of the theme switching function
-  using mask animation.
+- [MaskAnim](https://github.com/setruth/MaskAnim)：用于使用遮罩动画来切换主题功能的实现。

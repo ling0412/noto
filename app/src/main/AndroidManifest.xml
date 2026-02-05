@@ -73,12 +73,11 @@
             </intent-filter>
 
             <!-- 应用深度链接 -->
-            <intent-filter android:autoVerify="true">
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" />
-                <data android:host="www.yangdai-opennote.com" />
+                <data android:scheme="noto" android:host="app" android:pathPrefix="/" />
             </intent-filter>
         </activity>
 
@@ -87,7 +86,7 @@
             android:exported="true" />
 
         <receiver
-            android:name="com.yangdai.opennote.presentation.glance.NoteListWidgetReceiver"
+            android:name="com.ling.noto.presentation.glance.NoteListWidgetReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -99,7 +98,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.yangdai.opennote.fileprovider"
+            android:authorities="com.ling.noto.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

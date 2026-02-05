@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-    namespace = "com.yangdai.opennote"
+    namespace = "com.ling.noto"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.yangdai.opennote"
+        applicationId = "com.ling.noto"
         minSdk = 29
         targetSdk = 36
         versionCode = 1670
