@@ -43,6 +43,14 @@ object Constants {
         const val IS_AUTO_SAVE_ENABLED = "IS_AUTO_SAVE_ENABLED"
         const val TITLE_ALIGN = "TITLE_ALIGN"
         const val SHOW_LINE_NUMBERS = "LINE_NUMBERS"
+        const val WEBDAV_URL = "WEBDAV_URL"
+        const val WEBDAV_USERNAME = "WEBDAV_USERNAME"
+        const val WEBDAV_PASSWORD = "WEBDAV_PASSWORD"
+        const val WEBDAV_AUTO_SYNC_ENABLED = "WEBDAV_AUTO_SYNC_ENABLED"
+    }
+
+    object WebDav {
+        const val SYNC_FILE_NAME = "noto_sync.json"
     }
 
     object Widget {

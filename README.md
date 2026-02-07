@@ -67,10 +67,6 @@ Noto 是一款完全使用 Compose 构建的现代化 Android 记事本应用程
 
 </div>
 
-## 🌎 翻译
-
-目前支持中文、英文、德语和土耳其语。
-
 ## 💡 如何使用 Markdown、LaTeX Math 和 Mermaid 图表？
 
 您可以在[用户指南](https://github.com/ling0412/noto/blob/main/Guide.zh.md)中了解有关如何使用 Markdown、LaTeX Math 和 Mermaid 图表的语法在 Noto 中编写文档的更多信息。

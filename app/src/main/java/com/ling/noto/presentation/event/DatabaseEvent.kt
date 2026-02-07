@@ -35,4 +35,18 @@ sealed interface DatabaseEvent {
         val context: Context,
         val uri: Uri
     ) : DatabaseEvent
+
+    /** WebDAV 测试连接：验证配置是否正确 */
+    data class WebDavTest(
+        val url: String,
+        val username: String,
+        val password: String
+    ) : DatabaseEvent
+
+    /** WebDAV 双向同步：先拉取合并，再上传 */
+    data class WebDavSync(
+        val url: String,
+        val username: String,
+        val password: String
+    ) : DatabaseEvent
 }

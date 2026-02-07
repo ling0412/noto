@@ -196,4 +196,13 @@
     <string name="important_alert">重要提醒</string>
     <string name="tip_alert">提示信息</string>
     <string name="note_alert">备注提醒</string>
+    <string name="webdav_save_config">保存配置</string>
+    <string name="webdav_save_config_hint">保存配置后即可使用同步功能</string>
+    <string name="webdav_test">测试连接</string>
+    <string name="webdav_test_connection">测试配置</string>
+    <string name="webdav_test_connection_desc">验证 URL、用户名和密码是否正确</string>
+    <string name="webdav_sync">同步</string>
+    <string name="webdav_sync_desc">双向同步：先下载合并，再上传</string>
+    <string name="webdav_auto_sync">自动同步</string>
+    <string name="webdav_auto_sync_desc">修改完成后 3 秒或应用进入后台时自动同步</string>
 </resources>

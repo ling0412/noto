@@ -27,7 +27,11 @@ data class SettingsState(
     val enumDisplayMode: ListNoteContentDisplayMode = ListNoteContentDisplayMode.RAW,
     val isAutoSaveEnabled: Boolean = false,
     val titleAlignment: Int = 0,
-    val showLineNumbers: Boolean = false
+    val showLineNumbers: Boolean = false,
+    val webdavUrl: String = "",
+    val webdavUsername: String = "",
+    val webdavPassword: String = "",
+    val webdavAutoSyncEnabled: Boolean = false
 )
 
 

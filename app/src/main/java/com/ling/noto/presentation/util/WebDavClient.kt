@@ -1,7 +1,7 @@
 package com.ling.noto.presentation.util
 
 import io.ktor.client.*
-import io.ktor.client.engine.android.*
+import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.auth.*
 import io.ktor.client.plugins.auth.providers.*
@@ -12,13 +12,16 @@ import io.ktor.client.statement.readRawBytes
 import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.net.URLDecoder
 
 class WebDavClient(
     private val baseUrl: String,
     private val username1: String,
     private val password1: String
 ) {
-    private val client = HttpClient(Android) {
+    private val normalizedBaseUrl: String = baseUrl.trimEnd('/')
+    // 使用 OkHttp 引擎：支持 PROPFIND、MKCOL 等非标准方法，且 TLS 兼容性优于 CIO
+    private val client = HttpClient(OkHttp) {
         install(Logging) {
             level = LogLevel.HEADERS
         }
@@ -28,6 +31,9 @@ class WebDavClient(
                     BasicAuthCredentials(username1, password1)
                 }
                 realm = "WebDAV"
+                // 预发送认证：部分服务器（如 Nextcloud）不会对 OPTIONS 返回 401，
+                // 导致默认的「等 401 再发凭据」流程无法触发，需主动携带凭据
+                sendWithoutRequest { true }
             }
         }
         install(HttpTimeout) {
@@ -37,13 +43,22 @@ class WebDavClient(
         }
     }
 
+    private fun buildUrl(path: String): String {
+        val trimmedPath = path.trimStart('/')
+        return if (trimmedPath.isEmpty()) {
+            normalizedBaseUrl
+        } else {
+            "$normalizedBaseUrl/$trimmedPath"
+        }
+    }
+
     /**
      * Tests connection to the WebDAV server
      * @return Result with success/failure information
      */
     suspend fun testConnection(): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
-            val response = client.request(baseUrl) {
+            val response = client.request(normalizedBaseUrl) {
                 method = HttpMethod.Options
             }
 
@@ -58,11 +73,14 @@ class WebDavClient(
     }
 
     /**
-     * Lists files and directories at a given path
+     * Lists files and directories at a given path.
+     * Parses PROPFIND XML response - supports d:href, D:href and other namespace prefixes
+     * used by different WebDAV servers (Nextcloud, ownCloud, Apache, etc.)
      */
     suspend fun listDirectory(path: String): Result<List<String>> = withContext(Dispatchers.IO) {
         try {
-            val response = client.request("$baseUrl/$path") {
+            val url = buildUrl(path)
+            val response = client.request(url) {
                 method = HttpMethod("PROPFIND")
                 headers {
                     append(HttpHeaders.Depth, "1")
@@ -70,15 +88,25 @@ class WebDavClient(
             }
 
             if (response.status.isSuccess()) {
-                // Parse the XML response to extract file/directory paths
-                // This is a simplified example - actual XML parsing would be needed
                 val responseBody = response.bodyAsText()
-                // Basic parsing logic could go here
-                val files = responseBody.split("<d:href>")
-                    .drop(1)
-                    .map { it.substringBefore("</d:href>") }
+                // Match href elements with various namespace prefixes (d:, D:, nc:, oc:, or none)
+                val hrefPattern = Regex("""<(?:[^:>]+:)?href>([^<]+)</(?:[^:>]+:)?href>""", RegexOption.IGNORE_CASE)
+                val allHrefs = hrefPattern.findAll(responseBody)
+                    .map { it.groupValues[1].trim() }
+                    .map { href ->
+                        try {
+                            URLDecoder.decode(href, Charsets.UTF_8.name())
+                        } catch (_: Exception) {
+                            href
+                        }
+                    }
+                    .filter { it.isNotEmpty() }
+                    .toList()
 
-                Result.success(files)
+                // First href is the requested collection itself, rest are its contents
+                val contents = allHrefs.drop(1)
+
+                Result.success(contents)
             } else {
                 Result.failure(Exception("Failed to list directory: ${response.status}"))
             }
@@ -93,7 +121,7 @@ class WebDavClient(
     suspend fun uploadFile(remotePath: String, content: ByteArray): Result<Boolean> =
         withContext(Dispatchers.IO) {
             try {
-                val response = client.put("$baseUrl/$remotePath") {
+                val response = client.put(buildUrl(remotePath)) {
                     setBody(content)
                 }
 
@@ -112,7 +140,7 @@ class WebDavClient(
      */
     suspend fun downloadFile(remotePath: String): Result<ByteArray> = withContext(Dispatchers.IO) {
         try {
-            val response = client.get("$baseUrl/$remotePath")
+            val response = client.get(buildUrl(remotePath))
 
             if (response.status.isSuccess()) {
                 Result.success(response.readRawBytes())
@@ -129,7 +157,7 @@ class WebDavClient(
      */
     suspend fun createDirectory(remotePath: String): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
-            val response = client.request("$baseUrl/$remotePath") {
+            val response = client.request(buildUrl(remotePath)) {
                 method = HttpMethod("MKCOL")
             }
 

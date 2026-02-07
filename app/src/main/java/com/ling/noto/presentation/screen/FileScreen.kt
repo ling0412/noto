@@ -924,6 +924,7 @@ fun FileScreen(
         isLoading = dataAction.loading,
         progress = dataAction.progress,
         message = dataAction.message,
+        isError = dataAction.isError,
         onDismissRequest = viewModel::cancelDataAction
     )
 }

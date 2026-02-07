@@ -331,6 +331,7 @@ fun DataPane(sharedViewModel: SharedViewModel) {
         progress = actionState.progress,
         infinite = actionState.infinite,
         message = actionState.message,
+        isError = actionState.isError,
         onDismissRequest = sharedViewModel::cancelDataAction
     )
 }

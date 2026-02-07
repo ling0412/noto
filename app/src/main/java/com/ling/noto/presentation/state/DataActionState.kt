@@ -7,5 +7,6 @@ data class DataActionState(
     val loading: Boolean = false,
     val progress: Float = 0f,
     val infinite: Boolean = false,
-    val message: String = ""
+    val message: String = "",
+    val isError: Boolean = false
 )

@@ -59,6 +59,7 @@ import com.ling.noto.presentation.state.SettingsState
 import com.ling.noto.presentation.state.TextState
 import com.ling.noto.presentation.util.BackupManager
 import com.ling.noto.presentation.util.Constants
+import com.ling.noto.presentation.util.WebDavAutoSync
 import com.ling.noto.presentation.util.PARSER
 import com.ling.noto.presentation.util.decryptBackupDataWithCompatibility
 import com.ling.noto.presentation.util.encryptBackupData
@@ -119,7 +120,8 @@ import javax.inject.Inject
 class SharedViewModel @Inject constructor(
     private val database: Database,
     private val appDataStoreRepository: AppDataStoreRepository,
-    private val useCases: UseCases
+    private val useCases: UseCases,
+    private val webDavAutoSync: WebDavAutoSync
 ) : ViewModel() {
 
     val authenticated = MutableStateFlow(false)
@@ -278,7 +280,11 @@ class SharedViewModel @Inject constructor(
         appDataStoreRepository.intFlow(Constants.Preferences.ENUM_DISPLAY_MODE),
         appDataStoreRepository.booleanFlow(Constants.Preferences.IS_AUTO_SAVE_ENABLED),
         appDataStoreRepository.intFlow(Constants.Preferences.TITLE_ALIGN),
-        appDataStoreRepository.booleanFlow(Constants.Preferences.SHOW_LINE_NUMBERS)
+        appDataStoreRepository.booleanFlow(Constants.Preferences.SHOW_LINE_NUMBERS),
+        appDataStoreRepository.stringFlow(Constants.Preferences.WEBDAV_URL),
+        appDataStoreRepository.stringFlow(Constants.Preferences.WEBDAV_USERNAME),
+        appDataStoreRepository.stringFlow(Constants.Preferences.WEBDAV_PASSWORD),
+        appDataStoreRepository.booleanFlow(Constants.Preferences.WEBDAV_AUTO_SYNC_ENABLED)
     ) { values ->
         SettingsState(
             theme = AppTheme.fromInt(values[0] as Int),
@@ -304,7 +310,11 @@ class SharedViewModel @Inject constructor(
             enumDisplayMode = ListNoteContentDisplayMode.fromInt(values[20] as Int),
             isAutoSaveEnabled = values[21] as Boolean,
             titleAlignment = values[22] as Int,
-            showLineNumbers = values[23] as Boolean
+            showLineNumbers = values[23] as Boolean,
+            webdavUrl = values[24] as String,
+            webdavUsername = values[25] as String,
+            webdavPassword = values[26] as String,
+            webdavAutoSyncEnabled = values[27] as Boolean
         )
     }.flowOn(Dispatchers.IO).stateIn(
         scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = SettingsState()
@@ -361,6 +371,7 @@ class SharedViewModel @Inject constructor(
                             useCases.deleteNote(it)
                         }
                     }
+                    webDavAutoSync.scheduleSync()
                 }
             }
 
@@ -379,6 +390,7 @@ class SharedViewModel @Inject constructor(
                             )
                         )
                     }
+                    webDavAutoSync.scheduleSync()
                 }
             }
 
@@ -408,6 +420,7 @@ class SharedViewModel @Inject constructor(
                             )
                         )
                     }
+                    webDavAutoSync.scheduleSync()
                 }
             }
 
@@ -450,6 +463,7 @@ class SharedViewModel @Inject constructor(
                     useCases.updateFolder(event.folder)
                 }
             }
+            webDavAutoSync.scheduleSync()
         }
     }
 
@@ -516,6 +530,7 @@ class SharedViewModel @Inject constructor(
                             )
                         )
                     }
+                    webDavAutoSync.scheduleSync()
                     uiEventFlow.emit(UiEvent.NavigateBack)
                 }
             }
@@ -630,6 +645,7 @@ class SharedViewModel @Inject constructor(
                             noteStateFlow.update { it.copy(id = newId) }
                         }
                     }
+                    webDavAutoSync.scheduleSync()
                 }
             }
         }
@@ -940,6 +956,7 @@ class SharedViewModel @Inject constructor(
                         }
                     }.onSuccess {
                         _dataActionState.update { it.copy(progress = 1f) }
+                        webDavAutoSync.scheduleSync()
                     }
                 }
             }
@@ -1011,6 +1028,64 @@ class SharedViewModel @Inject constructor(
                         it.copy(
                             message = "Operation failed: ${e.localizedMessage}"
                         )
+                    }
+                }
+            }
+
+            is DatabaseEvent.WebDavTest -> {
+                startDataAction()
+                dataActionJob = viewModelScope.launch(Dispatchers.IO) {
+                    runCatching {
+                        val client = com.ling.noto.presentation.util.WebDavClient(
+                            baseUrl = event.url.trimEnd('/'),
+                            username1 = event.username,
+                            password1 = event.password
+                        )
+                        try {
+                            client.testConnection().getOrThrow()
+                            client.listDirectory("").getOrElse { throw it }
+                            _dataActionState.update {
+                                it.copy(progress = 1f, message = "连接成功")
+                            }
+                        } finally {
+                            client.close()
+                        }
+                    }.onFailure { throwable ->
+                        _dataActionState.update {
+                            it.copy(
+                                progress = 1f,
+                                message = "连接失败: ${throwable.localizedMessage ?: throwable.message}",
+                                isError = true
+                            )
+                        }
+                    }
+                }
+            }
+
+            is DatabaseEvent.WebDavSync -> {
+                startDataAction()
+                dataActionJob = viewModelScope.launch(Dispatchers.IO) {
+                    runCatching {
+                        val client = com.ling.noto.presentation.util.WebDavClient(
+                            baseUrl = event.url.trimEnd('/'),
+                            username1 = event.username,
+                            password1 = event.password
+                        )
+                        try {
+                            com.ling.noto.presentation.util.WebDavSync.sync(client, useCases).getOrThrow()
+                        } finally {
+                            client.close()
+                        }
+                    }.onSuccess {
+                        _dataActionState.update { it.copy(progress = 1f) }
+                    }.onFailure { throwable ->
+                        _dataActionState.update {
+                            it.copy(
+                                progress = 1f,
+                                message = "同步失败: ${throwable.localizedMessage ?: throwable.message}",
+                                isError = true
+                            )
+                        }
                     }
                 }
             }

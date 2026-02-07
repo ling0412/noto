@@ -166,7 +166,7 @@ fun SettingsDetailPane(
                 }
 
                 2 -> {
-                    CloudPane()
+                    CloudPane(sharedViewModel = sharedViewModel)
                 }
 
                 3 -> {

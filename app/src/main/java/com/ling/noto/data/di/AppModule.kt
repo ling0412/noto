@@ -3,6 +3,10 @@ package com.ling.noto.data.di
 import android.content.Context
 import androidx.room.Room
 import com.ling.noto.data.local.Database
+import com.ling.noto.presentation.util.WebDavAutoSync
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import com.ling.noto.data.local.MIGRATION_1_2
 import com.ling.noto.data.repository.AppDataStoreRepositoryImpl
 import com.ling.noto.data.repository.FolderRepositoryImpl
@@ -83,5 +87,22 @@ object AppModule {
         deleteFolder = DeleteFolder(folderRepository),
         getFolders = GetFolders(folderRepository),
         getNotesCountByFolderId = GetNotesCountByFolderId(noteRepository)
+    )
+
+    @Singleton
+    @Provides
+    fun provideApplicationScope(): CoroutineScope =
+        CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    @Singleton
+    @Provides
+    fun provideWebDavAutoSync(
+        appDataStoreRepository: AppDataStoreRepository,
+        useCases: UseCases,
+        scope: CoroutineScope
+    ): WebDavAutoSync = WebDavAutoSync(
+        appDataStoreRepository = appDataStoreRepository,
+        useCases = useCases,
+        scope = scope
     )
 }

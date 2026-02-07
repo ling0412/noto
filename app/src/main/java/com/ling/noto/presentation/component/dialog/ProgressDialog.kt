@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Done
+import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -34,6 +35,7 @@ fun ProgressDialog(
     progress: Float,
     infinite: Boolean = false,
     message: String = "",
+    isError: Boolean = false,
     onDismissRequest: () -> Unit
 ) {
 
@@ -64,13 +66,13 @@ fun ProgressDialog(
                             progress = { progress }
                         )
 
-                    AnimatedContent(targetState = progress, label = "progress") {
-                        if (it == 1f)
+                    AnimatedContent(targetState = progress to isError, label = "progress") { (prog, err) ->
+                        if (prog == 1f)
                             Icon(
                                 modifier = Modifier.size(56.dp),
-                                imageVector = Icons.Rounded.Done,
+                                imageVector = if (err) Icons.Rounded.Error else Icons.Rounded.Done,
                                 contentDescription = "",
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = if (err) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
                             )
                         else
                             if (!infinite)

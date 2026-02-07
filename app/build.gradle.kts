@@ -93,6 +93,7 @@ android {
 dependencies {
     implementation (libs.ktor.client.core)
     implementation (libs.ktor.client.android)
+    implementation (libs.ktor.client.okhttp)
     implementation (libs.ktor.client.auth)
     implementation (libs.ktor.client.logging)
 
@@ -138,6 +139,7 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.activity.compose)
 
     // AndroidX
